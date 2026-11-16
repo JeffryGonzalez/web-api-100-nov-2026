@@ -1,0 +1,17 @@
+<Project Sdk="Aspire.AppHost.Sdk/13.5.3">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net11.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AspireUseCliBundle>true</AspireUseCliBundle>
+    <UserSecretsId>895b6a92-b139-4a8a-a7db-5be0412d84dd</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SuperFastStartupApi\SuperFastStartupApi.csproj" />
+    <ProjectReference Include="..\VideoGames.Api\VideoGames.Api.csproj" />
+  </ItemGroup>
+
+</Project>

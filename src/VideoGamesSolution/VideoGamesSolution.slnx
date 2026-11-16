@@ -1,3 +1,6 @@
 <Solution>
+  <Project Path="AppHost/AppHost.csproj" Id="c749631e-d885-4054-83f4-e16bedf27071" />
+  <Project Path="ServiceDefaultsNew/ServiceDefaultsNew.csproj" Id="2808a204-4c88-4443-ba7d-e377422afa1b" />
+  <Project Path="SuperFastStartupApi/SuperFastStartupApi.csproj" />
   <Project Path="VideoGames.Api/VideoGames.Api.csproj" />
 </Solution>
