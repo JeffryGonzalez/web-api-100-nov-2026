@@ -1,0 +1,86 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://marketplace.visualstudio.com/items?itemName=pomdtr.excalidraw-editor",
+  "elements": [
+    {
+      "id": "G9RaG_qjMxGIOQb_sQxs-",
+      "type": "ellipse",
+      "x": 490,
+      "y": 131,
+      "width": 199,
+      "height": 161,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a0",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 927343670,
+      "version": 13,
+      "versionNonce": 17552746,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "swG-9DUuIdGeJMFaZwbeO"
+        }
+      ],
+      "updated": 1794844656064,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "swG-9DUuIdGeJMFaZwbeO",
+      "type": "text",
+      "x": 561.8828960238916,
+      "y": 199.07790411448292,
+      "width": 55.51995849609375,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a1",
+      "roundness": null,
+      "seed": 1113136374,
+      "version": 9,
+      "versionNonce": 1990676010,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1794844669003,
+      "link": null,
+      "locked": false,
+      "text": "APIs!",
+      "fontSize": 20,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "G9RaG_qjMxGIOQb_sQxs-",
+      "originalText": "APIs!",
+      "autoResize": true,
+      "lineHeight": 1.25
+    }
+  ],
+  "appState": {
+    "gridSize": 20,
+    "gridStep": 5,
+    "gridModeEnabled": false,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}

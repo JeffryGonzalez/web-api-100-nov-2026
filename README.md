@@ -11,3 +11,12 @@
     - A good place for any notes you might want to take, there are a couple things in there to get us started.
 - ./src/
     - The projects we create will go in here.
+
+
+## Using Classroom Sync
+
+1. You can sync a file or directory by right-clicking on that file or directory in VS Code and selecting "Sync from Instructor"
+
+2. You can add a file or directory you don't have and then sync it.
+
+3. Hit "Ctrl+Shift+P", type Classroom Sync, and select Browse Instructor Content
