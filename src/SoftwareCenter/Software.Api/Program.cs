@@ -1,10 +1,13 @@
+using Marten;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // add YOUR defaults for all services in terms of config, SRE (retries, circuit breakers, etc.)
 // also configures OTEL (tracing, metrics, logs)
-
 builder.AddServiceDefaults();
 
+builder.AddNpgsqlDataSource("software-db");
+builder.Services.AddMarten().UseLightweightSessions().UseNpgsqlDataSource();
 
 // Add services to the container.
 

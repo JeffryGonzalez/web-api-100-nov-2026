@@ -1,4 +1,4 @@
-@VideoGames.Api_HostAddress = http://localhost:5165
+@VideoGames.Api_HostAddress = https://localhost:1337
 
 GET {{VideoGames.Api_HostAddress}}/openapi/v1.json
 Accept: application/json
@@ -15,6 +15,6 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "title": "GTA 6",
-  "platforms": ["Playstation", "PC"]
+  "title": "Minecraft",
+  "platforms": ["Playstation", "PC", "XBox"]
 }

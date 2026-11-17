@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Marten;
+using Microsoft.AspNetCore.Mvc;
 
 
 namespace Software.Api.Vendors;
@@ -10,38 +11,56 @@ namespace Software.Api.Vendors;
 public class VendorsController : ControllerBase
 {
     [HttpPost]
-    public async Task<ActionResult<VendorDetailsModel>> CreateVendor([FromBody] VendorCreateModel model)
+    public async Task<ActionResult<VendorDetailsModel>> CreateVendor([FromBody] VendorCreateModel model, [FromServices] TimeProvider clock, [FromServices] IDocumentSession session)
     {
-        // Simulate creating a vendor and returning the details
-        var newVendor = new VendorDetailsModel
+
+        var vendorEntity = new VendorEntity
         {
             Id = Guid.NewGuid(),
             Name = model.Name,
             Url = model.Url,
-            PointOfContact = model.PointOfContact
+            PointOfContact = model.PointOfContact,
+            CreatedAt = clock.GetUtcNow(),
+            CreatedBy = User.Identity?.Name ?? "Unknown"
         };
-        // In a real application, you would save the new vendor to a database here
+
+        session.Store(vendorEntity);
+        await session.SaveChangesAsync();
+
+        var newVendor = new VendorDetailsModel
+        {
+            Id = vendorEntity.Id,
+            Name = vendorEntity.Name,
+            Url = vendorEntity.Url,
+            PointOfContact = vendorEntity.PointOfContact
+        };
+
         return CreatedAtAction(nameof(GetVendorById), new { id = newVendor.Id }, newVendor);
     }
     // GET /vendors/some-big-old-id
-    [HttpGet("{vendorId:guid}")]
-    public async Task<ActionResult<VendorDetailsModel>> GetVendorById(Guid vendorId)
+    [HttpGet]
+    public async Task<ActionResult<VendorSummary>> GetVendors([FromServices] IDocumentSession session, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
-        // Simulate retrieving a vendor by ID
-        var vendor = new VendorDetailsModel
-        {
-            Id = vendorId,
-            Name = "Sample Vendor",
-            Url = "https://example.com",
-            PointOfContact = new VendorPointOfContact
+
+        var vendors = await session.Query<VendorEntity>()
+            .OrderBy(v => v.Name)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .Select(v => new VendorSummaryModel
             {
-                Name = "John Doe",
-                Email = "john.doe@example.com",
-                Phone = "123-456-7890"
-            }
+                Id = v.Id,
+                Name = v.Name,
+                Url = v.Url
+            })
+            .ToListAsync();
+
+        var summary = new VendorSummary
+        {
+            Vendors = vendors,
+            Page = page,
+            PageSize = pageSize
         };
-        // In a real application, you would retrieve the vendor from a database here
-        return Ok(vendor);
+        return Ok(summary);
     }
 
     // GET /vendors
@@ -67,6 +86,27 @@ public class VendorsController : ControllerBase
         };
         // In a real application, you would retrieve the vendors from a database here
         return Ok(summary);
+    }
+
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<VendorDetailsModel>> GetVendorById(Guid id, [FromServices] IDocumentSession session)
+    {
+
+        var response = await session.Query<VendorEntity>()
+            .Select(v => new VendorDetailsModel
+            {
+                Id = v.Id,
+                Name = v.Name,
+                Url = v.Url,
+                PointOfContact = v.PointOfContact
+            })
+            .SingleOrDefaultAsync(v => v.Id == id);
+
+        return response switch
+        {
+            null => NotFound(),
+            _ => Ok(response)
+        };
     }
 
 }

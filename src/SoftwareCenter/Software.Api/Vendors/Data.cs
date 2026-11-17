@@ -1,5 +1,7 @@
 ﻿namespace Software.Api.Vendors;
 
+
+// Your database code goes here, depending on your selected approach
 public class VendorEntity
 {
     public Guid Id { get; init; }

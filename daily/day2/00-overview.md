@@ -10,6 +10,8 @@ Click "Go to VM"
 
 **Let me know if you have any problems, please!**
 
+**PLEASE start Docker Desktop**
+
 ## Today
 
 - Look at the requirements doc

@@ -1,8 +1,20 @@
 // top level statements - whatever is in your Program.cs will be added to the static voic Main(string[] args) when you compile.
+using Marten;
+
 var builder = WebApplication.CreateBuilder(args);
+builder.AddNpgsqlDataSource("videos-db");
 builder.AddServiceDefaults();
 
+// appsettings.json, appsettings.Environment.json, user secrets, environment variables, command-line
+
+
 // Add services to the container.
+
+builder.Services.AddMarten(options =>
+{
+
+}).UseNpgsqlDataSource()
+    .UseLightweightSessions();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
