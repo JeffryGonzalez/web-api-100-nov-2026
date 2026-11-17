@@ -87,12 +87,6 @@ We are taking the [〈Chosen Approach〉](./approaches/chosen.md) approach
 - Include at least one honest caveat (something the chosen approach is
   weak at that we're accepting).
 
-## We'd Revisit This If
-
-- Two to four *observable* triggers that would reopen this decision -
-  an assumption in the reasoning stops being true, the team's context
-  changes, a dependency stalls.
-
 ## Plan
 
 A numbered sequence of steps to implement the chosen approach.
@@ -109,8 +103,6 @@ A numbered sequence of steps to implement the chosen approach.
 ```
 
 The detailed, click-by-click version of the plan lives in the `labs/` directory - `plan.md` is the general strategy, the lab is the specific execution.
-
-A note on the "We'd Revisit This If" section - it matters more than it looks. A decision that names its own invalidators invites challenge instead of deference. A plan is a *cache of the reasoning*, cheap to regenerate when the world changes - and caches are supposed to get invalidated. This is what keeps these documents plans (partial, heuristic, revisable) rather than becoming the thing they're meant to replace: a formalized "this is just how we do it."
 
 ## Step 4: Check the decision with me
 
