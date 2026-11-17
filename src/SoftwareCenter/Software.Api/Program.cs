@@ -1,4 +1,5 @@
 using Marten;
+using Software.Api.Vendors;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +9,7 @@ builder.AddServiceDefaults();
 
 builder.AddNpgsqlDataSource("software-db");
 builder.Services.AddMarten().UseLightweightSessions().UseNpgsqlDataSource();
-
+builder.Services.AddScoped<IHandleVendorData, PostgresVendorData>();
 // Add services to the container.
 
 builder.Services.AddControllers();

@@ -37,59 +37,26 @@ public class VendorsController : ControllerBase
 
         return CreatedAtAction(nameof(GetVendorById), new { id = newVendor.Id }, newVendor);
     }
-    // GET /vendors/some-big-old-id
+    // GET /vendors
     [HttpGet]
-    public async Task<ActionResult<VendorSummary>> GetVendors([FromServices] IDocumentSession session, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+    public async Task<ActionResult<VendorSummary>> GetVendors([FromServices] IHandleVendorData vendorApi, CancellationToken token, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
 
-        var vendors = await session.Query<VendorEntity>()
-            .OrderBy(v => v.Name)
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .Select(v => new VendorSummaryModel
-            {
-                Id = v.Id,
-                Name = v.Name,
-                Url = v.Url
-            })
-            .ToListAsync();
-
-        var summary = new VendorSummary
+       IReadOnlyList<VendorSummaryModel>? summary = 
+            await vendorApi.GetVendorsAsync(page, pageSize);
+        var response = new VendorSummary
         {
-            Vendors = vendors,
+            Vendors = summary ?? [],
             Page = page,
             PageSize = pageSize
         };
-        return Ok(summary);
+        return Ok(response);
     }
 
     // GET /vendors
-    [HttpGet]
-    public async Task<ActionResult<VendorSummary>> GetVendors([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
-    {
-        // Simulate retrieving a list of vendors with pagination
-        var vendors = new List<VendorSummaryModel>();
-        for (int i = 0; i < pageSize; i++)
-        {
-            vendors.Add(new VendorSummaryModel
-            {
-                Id = Guid.NewGuid(),
-                Name = $"Vendor {((page - 1) * pageSize) + i + 1}",
-                Url = $"https://example.com/vendor{((page - 1) * pageSize) + i + 1}"
-            });
-        }
-        var summary = new VendorSummary
-        {
-            Vendors = vendors,
-            Page = page,
-            PageSize = pageSize
-        };
-        // In a real application, you would retrieve the vendors from a database here
-        return Ok(summary);
-    }
-
+  
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<VendorDetailsModel>> GetVendorById(Guid id, [FromServices] IDocumentSession session)
+    public async Task<ActionResult<VendorDetailsModel>> GetVendorById(Guid id, [FromServices] IDocumentSession session, CancellationToken token)
     {
 
         var response = await session.Query<VendorEntity>()
@@ -100,7 +67,7 @@ public class VendorsController : ControllerBase
                 Url = v.Url,
                 PointOfContact = v.PointOfContact
             })
-            .SingleOrDefaultAsync(v => v.Id == id);
+            .SingleOrDefaultAsync(v => v.Id == id, token);
 
         return response switch
         {
