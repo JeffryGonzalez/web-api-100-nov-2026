@@ -6,12 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace Software.Api.Vendors;
 
 // Api Controller says automatically validate any incoming request based on the validation rules of that model.
-
+[Authorize]
 [ApiController]
 [Route("vendors")] // /vendors resources
 public class VendorsController : ControllerBase
 {
     [HttpPost]
+    [Authorize(Policy = "SoftwareCenterManager")]
     public async Task<ActionResult<VendorDetailsModel>> CreateVendor([FromBody] VendorCreateModel model, [FromServices] TimeProvider clock, [FromServices] IDocumentSession session)
     {
 
@@ -57,6 +58,7 @@ public class VendorsController : ControllerBase
     // GET /vendors
   
     [HttpGet("{id:guid}")]
+    
     public async Task<ActionResult<VendorDetailsModel>> GetVendorById(Guid id, [FromServices] IDocumentSession session, CancellationToken token)
     {
 
@@ -77,6 +79,7 @@ public class VendorsController : ControllerBase
         };
     }
 
+    [Authorize(Policy = "SoftwareCenterManager")]
     [HttpPut("{id:guid}/point-of-contact")]
     public async Task<ActionResult> UpdatePocAsync(Guid id, [FromBody] VendorPointOfContact request, [FromServices] IDocumentSession session)
     {

@@ -23,7 +23,7 @@ public record VendorCreateModel
     // more on this coming tomorrow, because this is awesome and one of the things that I love about .NET APIs
     // in .net 11 the final piece to make this 100% awesome - ASYNC VALIDATION ATTRIBUTES
     [MinLength(5), MaxLength(100)]
-  
+
     public required string Name { get; init; }
     [Url]
     public required string Url { get; init; }

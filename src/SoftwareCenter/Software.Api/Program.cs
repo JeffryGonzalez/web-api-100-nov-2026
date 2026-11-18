@@ -7,6 +7,16 @@ var builder = WebApplication.CreateBuilder(args);
 // also configures OTEL (tracing, metrics, logs)
 builder.AddServiceDefaults();
 
+builder.Services.AddAuthentication().AddJwtBearer(options =>
+{
+    // this page left intentionally blank.
+});
+
+builder.Services.AddAuthorizationBuilder().AddPolicy("SoftwareCenterManager", policy =>
+{
+    policy.RequireRole("SoftwareCenter");
+    policy.RequireRole("Manager");
+});
 builder.AddNpgsqlDataSource("software-db");
 builder.Services.AddMarten().UseLightweightSessions().UseNpgsqlDataSource();
 builder.Services.AddScoped<IHandleVendorData, PostgresVendorData>();
@@ -33,7 +43,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 // this won't work unless you have the controller services

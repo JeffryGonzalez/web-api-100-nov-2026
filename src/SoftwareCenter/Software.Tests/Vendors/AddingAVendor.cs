@@ -3,6 +3,7 @@ using Alba;
 using Marten;
 using Microsoft.Extensions.DependencyInjection;
 using Software.Api.Vendors;
+using System.Security.Claims;
 
 namespace Software.Tests.Vendors;
 
@@ -18,8 +19,37 @@ public class AddingAVendor : SystemTestContext
     [Fact]
     public async Task PostingANewVendorHappyPath()
     {
+
+
+        //var response = await Host.Scenario(api =>
+        //{
+        //    api.WithClaim(new System.Security.Claims.Claim(ClaimTypes.Role, "SoftwareCenter"));
+        //    api.WithClaim(new System.Security.Claims.Claim(ClaimTypes.Role, "Manager"));
+        //    api.Post.Json(new VendorCreateModel { CompanyName = "Microsoft",
+        //        Url = "https://www.microsoft.com",
+        //        PointOfContact = new VendorPointOfContact
+        //        {
+        //            Name = "Satya N",
+        //            Email = "satya@microsoft.com"
+        //        }
+        //    }).ToUrl("/vendors");
+
+        //    api.StatusCodeShouldBe(201);
+        //    //api.JsonPath("$.name").ShouldBe("Microsoft");
+        //    //api.JsonPath("$.url").ShouldBe("https://www.microsoft.com");
+        //    //api.JsonPath("$.pointOfContact.name").ShouldBe("Satya N");
+        //    //api.JsonPath("$.id").ShouldExist();
+        //});
+
+        //var thingy = response.ReadAsJson<VendorDetailsModel>();
+
+        //Assert.NotNull(thingy);
+        //Assert.Equal("Microsoft", thingy.Name);
+
         var response = await Host.Scenario(api =>
         {
+            api.WithClaim(new System.Security.Claims.Claim(ClaimTypes.Role, "SoftwareCenter"));
+            api.WithClaim(new System.Security.Claims.Claim(ClaimTypes.Role, "Manager"));
             api.Post.Json(new
             {
                 name = "Microsoft",
@@ -30,6 +60,7 @@ public class AddingAVendor : SystemTestContext
                     email = "satya@microsoft.com"
                 }
             }).ToUrl("/vendors");
+
             api.StatusCodeShouldBe(201);
             api.JsonPath("$.name").ShouldBe("Microsoft");
             api.JsonPath("$.url").ShouldBe("https://www.microsoft.com");

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Text;
 
 namespace Software.Tests.Vendors;
@@ -17,6 +18,8 @@ public class PostsAreValidated : SystemTestContext
 
         await Host.Scenario(api =>
         {
+            api.WithClaim(new System.Security.Claims.Claim(ClaimTypes.Role, "SoftwareCenter"));
+            api.WithClaim(new System.Security.Claims.Claim(ClaimTypes.Role, "Manager"));
             api.Post.Json(willfullyWrongVendor).ToUrl("/vendors");
             api.StatusCodeShouldBe(400);
         });

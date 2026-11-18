@@ -20,7 +20,7 @@ public class Validations
        // Assert.True(HasAttribute<RequiredAttribute, VendorCreateModel>(nameof(VendorCreateModel.Name)));
         Assert.True(HasAttribute<MinLengthAttribute, VendorCreateModel>(nameof(VendorCreateModel.Name)));
         Assert.True(HasAttribute<MaxLengthAttribute, VendorCreateModel>(nameof(VendorCreateModel.Name)));
-        Assert.True(HasAttribute<MinLengthAttribute, VendorCreateModel>(nameof(VendorCreateModel.Name)));
+        Assert.True(HasAttribute<UrlAttribute, VendorCreateModel>(nameof(VendorCreateModel.Url)));
 
        
         Assert.Equal(100, GetAttribute<MaxLengthAttribute, VendorCreateModel>(nameof(VendorCreateModel.Name))?.Length);

@@ -1,10 +1,13 @@
 using Aspire.Hosting.Yarp;
+using Aspire.Hosting.Dotnet;
 using Aspire.Hosting.Yarp.Transforms;
 using Scalar.Aspire;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-var pg = builder.AddPostgres("postgres");
+var pg = builder.AddPostgres("postgres")
+    .WithDataVolume("pg-data")
+    .WithLifetime(ContainerLifetime.Persistent);
 
 var softwareDb = pg.AddDatabase("software-db");
 
@@ -14,9 +17,14 @@ var scalar = builder.AddScalarApiReference(options =>
     options.AllowSelfSignedCertificates = true;
 });
 
-var softwareApi = builder.AddProject<Projects.Software_Api>("software-api")
+
+
+
+var softwareApi = builder.AddDotnetProject("software-api",
+                                           "../Software.Api")
     .WaitFor(softwareDb)
     .WithReference(softwareDb);
+
 
 // start my frontend
 var frontend = builder.AddViteApp("frontend", "../frontend", "start");
@@ -31,6 +39,6 @@ builder.AddYarp("gateway")
         // any requests coming in go to the frontend
         yarp.AddRoute(frontend);
         // unless they start with "/api/", then send it to the software api, but remove the "/api" part.
-        yarp.AddRoute("/api/{**catchall}", softwareApi).WithTransformPathRemovePrefix("/api");
+       yarp.AddRoute("/api/{**catchall}", softwareApi).WithTransformPathRemovePrefix("/api");
     });
 builder.Build().Run();
