@@ -23,7 +23,7 @@ public class VendorsController : ControllerBase
             Url = model.Url,
             PointOfContact = model.PointOfContact,
             CreatedAt = clock.GetUtcNow(),
-            CreatedBy = User.Identity?.Name ?? "Unknown"
+            CreatedBy = User.Identity?.Name ?? throw new ApplicationException("User.Identity.Name is null, but it should not be null because this endpoint requires authentication")
         };
 
         session.Store(vendorEntity);
@@ -70,7 +70,7 @@ public class VendorsController : ControllerBase
                 Url = v.Url,
                 PointOfContact = v.PointOfContact
             })
-            .SingleOrDefaultAsync(v => v.Id == id, token);
+            .FirstOrDefaultAsync(v => v.Id == id, token);
 
         return response switch
         {
@@ -90,7 +90,7 @@ public class VendorsController : ControllerBase
         }
 
         vendor.PointOfContact = request;
-        session.Store(vendor);
+        session.Insert(vendor);
         await session.SaveChangesAsync();
 
 

@@ -22,7 +22,7 @@ public record VendorCreateModel
     // these now use Roslyn to generate the code at compile time.
     // more on this coming tomorrow, because this is awesome and one of the things that I love about .NET APIs
     // in .net 11 the final piece to make this 100% awesome - ASYNC VALIDATION ATTRIBUTES
-    [MinLength(5), MaxLength(100)]
+    [MinLength(5), MaxLength(100), Required]
 
     public required string Name { get; init; }
     [Url]

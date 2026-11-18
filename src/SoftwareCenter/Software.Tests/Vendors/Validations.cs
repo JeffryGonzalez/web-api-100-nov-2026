@@ -1,9 +1,9 @@
 ﻿
 
-using ICSharpCode.SharpZipLib.Zip;
+
 using Software.Api.Vendors;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
+
 
 namespace Software.Tests.Vendors;
 
@@ -15,9 +15,13 @@ public class Validations
         /*In .NET API validation, the C# required modifier enforces that a JSON key exists during deserialization 
          * and object construction, whereas [Required] (RequiredAttribute) validates that the parsed property value is not null,
          * empty, or whitespace during model validation.
+         * { "name":  "" } - that will pass
+         * { "name":  null } - that will pass
+         * { } - that will fail
          */
 
-       // Assert.True(HasAttribute<RequiredAttribute, VendorCreateModel>(nameof(VendorCreateModel.Name)));
+        Assert.True(HasAttribute<RequiredAttribute, VendorCreateModel>(nameof(VendorCreateModel.Name)));
+        // the RequiredAttribute will fail if the property is null, empty, or whitespace.
         Assert.True(HasAttribute<MinLengthAttribute, VendorCreateModel>(nameof(VendorCreateModel.Name)));
         Assert.True(HasAttribute<MaxLengthAttribute, VendorCreateModel>(nameof(VendorCreateModel.Name)));
         Assert.True(HasAttribute<UrlAttribute, VendorCreateModel>(nameof(VendorCreateModel.Url)));

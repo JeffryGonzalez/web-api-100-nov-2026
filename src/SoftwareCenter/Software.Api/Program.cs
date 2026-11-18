@@ -1,4 +1,5 @@
 using Marten;
+using Software.Api.Catalog;
 using Software.Api.Vendors;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,9 @@ builder.Services.AddAuthentication().AddJwtBearer(options =>
 {
     // this page left intentionally blank.
 });
+
+builder.Services.AddSingleton<TimeProvider>(TimeProvider.System);
+
 
 builder.Services.AddAuthorizationBuilder().AddPolicy("SoftwareCenterManager", policy =>
 {
@@ -25,7 +29,7 @@ builder.Services.AddScoped<IHandleVendorData, PostgresVendorData>();
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-
+builder.Services.AddCatalog();
 // above this line is configuring what services are available to the code that will process our requests
 // and make responses
 var app = builder.Build();
@@ -50,6 +54,8 @@ app.UseAuthorization();
 // use reflection to read all those attributes and make the route table (phone list)
 // if I get GET /vendors - create the vendors controller, call teh get method.
 app.MapControllers();
+
+app.MapCatalog();
 
 // JIT - jitter, Just in time, method by method compilation at run time. 
 app.Run();

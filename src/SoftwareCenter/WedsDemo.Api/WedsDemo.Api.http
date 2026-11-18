@@ -1,0 +1,11 @@
+@WedsDemo.Api_HostAddress = http://localhost:5296
+
+GET {{WedsDemo.Api_HostAddress}}/openapi/v1.json
+Accept: application/json
+
+###
+
+GET {{WedsDemo.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -26,7 +26,7 @@ public class AuthenticatedSystemTestFixture : IAsyncLifetime
         Host = await Alba.AlbaHost.For<Program>(builder =>
         {
 
-        }, new AuthenticationStub(), Clock).WithConfiguration("ConnectionStrings:software-db", _pgContainer.GetConnectionString());
+        }, new AuthenticationStub().WithName("test-user"), Clock).WithConfiguration("ConnectionStrings:software-db", _pgContainer.GetConnectionString());
     }
     public async ValueTask DisposeAsync()
     {
@@ -51,7 +51,7 @@ public class UnauthenticatedSystemTestFixture : IAsyncLifetime
         Host = await Alba.AlbaHost.For<Program>(builder =>
         {
 
-        }, Clock).WithConfiguration("ConnectionStrings:software-db", "Host=none;database=none;user=should-not-use-database");
+        }, Clock).WithConfiguration("ConnectionStrings:software-db", "Server=127.0.0.1;Port=5432;Database=NOTREAL;User Id=myUsername;Password=myPassword;");
     }
     public async ValueTask DisposeAsync()
     {

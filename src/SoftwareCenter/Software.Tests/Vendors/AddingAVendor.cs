@@ -85,13 +85,18 @@ public class AddingAVendor : SystemTestContext
 
         });
 
+        // This is the "gray box" thing - 
+        // we can do things like check the database, we can look at messages on a broker, all that stuff
+        // these are things that are almost impossible (or very costly ) in system integration tests. 
+
         using var scope = Host.Services.CreateScope();
         using var db = scope.ServiceProvider.GetRequiredService<IDocumentSession>();
 
-        var createdDoc = await db.LoadAsync<VendorEntity>(createdId, TestContext.Current.CancellationToken);
+        var createdDoc = await db.Query<VendorEntity>().FirstOrDefaultAsync(x => x.Id == createdId, TestContext.Current.CancellationToken);
         Assert.NotNull(createdDoc);
         Assert.Equal("Microsoft", createdDoc.Name);
         Assert.Equal(Fixture.Clock.GetUtcNow(), createdDoc.CreatedAt);
+        //Fixture.Clock.Advance(TimeSpan.FromDays(365 * 10));
     }
 }
 
