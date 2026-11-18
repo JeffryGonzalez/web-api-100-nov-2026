@@ -77,4 +77,21 @@ public class VendorsController : ControllerBase
         };
     }
 
+    [HttpPut("{id:guid}/point-of-contact")]
+    public async Task<ActionResult> UpdatePocAsync(Guid id, [FromBody] VendorPointOfContact request, [FromServices] IDocumentSession session)
+    {
+        var vendor = await session.LoadAsync<VendorEntity>(id);
+        if(vendor is null )
+        {
+            return NotFound();
+        }
+
+        vendor.PointOfContact = request;
+        session.Store(vendor);
+        await session.SaveChangesAsync();
+
+
+        return Accepted();
+    }
+
 }
